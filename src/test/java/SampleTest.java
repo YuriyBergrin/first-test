@@ -8,39 +8,44 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-
-import java.util.concurrent.TimeUnit;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SampleTest {
+	//неявные ожидание в классе driver factory
 	private Logger logger = LogManager.getLogger(SampleTest.class);
 	private ServerConfig cfg = ConfigFactory.create(ServerConfig.class);
 	protected static WebDriver driver;
-	String webDriverBrowserName;
+	private String webDriverBrowserName;
+	private WebDriverWait wait;//явное ожидание
 
 	@Before
 	public void setUp() {
-		webDriverBrowserName = System.getProperty("browser");
+		webDriverBrowserName = System.getProperty("browser");//драйвер задается командой
+		// например clean test -Dbrowser='ChRomE'
+		//если просто clean test то по умолчанию будет firefox, указал в помнике
 	}
 
-	@Test
+	@Test//без опций с явным ожиданием
 	public void webDriverFactoryTest() {
 		driver = WebDriverFactory.create(webDriverBrowserName);
-		openPage();
+		driver.get("https://msk.tele2.ru/shop/number");
+		driver.findElement(By.id("searchNumber")).sendKeys("97");
+		wait = new WebDriverWait(driver,10);
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className("catalog-numbers")));
 	}
 
-	@Test
+	@Test//с опциями
 	public void webDriverFactoryWithOptionsTest() {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
+		//инициализируем драйвер с опциями
 		driver = WebDriverFactory.create(webDriverBrowserName, options);
 		driver.get("https://yandex.ru");
+		Assert.assertEquals("Яндекс", driver.getTitle());
 	}
 
 	@After
@@ -49,10 +54,5 @@ public class SampleTest {
 			driver.quit();
 			logger.info("Драйвер успешно закрыт");
 		}
-	}
-
-	private void openPage() {
-		driver.get(cfg.url());
-		logger.info("Открыта страница " + cfg.url());
 	}
 }
