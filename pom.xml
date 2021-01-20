@@ -13,6 +13,38 @@
 		<maven.compiler.target>8</maven.compiler.target>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>Chrome</id>
+			<properties>
+				<browser>CHROME</browser>
+			</properties>
+		</profile>
+		<profile>
+			<id>Firefox</id>
+			<properties>
+				<browser>FIREFOX</browser>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+				<configuration>
+					<systemPropertyVariables>
+						<!--suppress UnresolvedMavenProperty -->
+						<browser>${browser}</browser>
+						<buildDirectory>${project.build.directory}</buildDirectory>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
 		<dependency>
