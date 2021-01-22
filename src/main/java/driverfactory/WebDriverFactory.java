@@ -23,13 +23,15 @@ public class WebDriverFactory {
 	public static WebDriver create(String webDriverName) {
 		webDriverName = webDriverName.toUpperCase().replaceAll("'", "");
 		logger.info("BROWSER IS " + webDriverName);
-		logger.info("RETURN NEW " + Browsers.valueOf(webDriverName));
-		switch (webDriverName) {
-			case "CHROME":
+
+		Browsers browser = Browsers.valueOf(webDriverName);
+
+		switch (browser) {
+			case CHROME:
 				WebDriverManager.chromedriver().setup();
 				driver = new ChromeDriver();
 				break;
-			case "FIREFOX":
+			case FIREFOX:
 				WebDriverManager.firefoxdriver().setup();
 				driver = new FirefoxDriver();
 				break;
