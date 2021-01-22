@@ -65,7 +65,6 @@ public class WebDriverFactory {
 	public static WebDriver create(String webDriverName, FirefoxOptions options) {
 		logger.info("Return firefox with options");
 		WebDriverManager.firefoxdriver().setup();
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 		driver = new FirefoxDriver(options);
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 		return driver;
