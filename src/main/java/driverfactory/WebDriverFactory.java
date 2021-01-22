@@ -37,7 +37,7 @@ public class WebDriverFactory {
 				logger.info("Unknown browser name");
 				driver = null;
 		}
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		logger.info("Return " + webDriverName + " driver without options");
 		return driver;
 	}

@@ -14,6 +14,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.concurrent.TimeUnit;
+
 public class SampleTest {
 	//неявные ожидание в классе driver factory
 	private Logger logger = LogManager.getLogger(SampleTest.class);
@@ -48,10 +50,30 @@ public class SampleTest {
 		Assert.assertEquals("Яндекс", driver.getTitle());
 	}
 
+	@Test
+	public void lesson6() {
+		driver = WebDriverFactory.create("FIREFOX");
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get("http://otus.ru");
+		driver.findElement(By.xpath("//button[@data-modal-id]")).click();
+		driver.findElement(By.xpath("(//input[@placeholder = \"Электронная почта\"])[3]")).sendKeys("fasekel644@pashter.com");
+		driver.findElement(By.cssSelector("input[type = \"password\"]")).sendKeys("qwerty123456789");
+		driver.findElement(By.xpath("(//button[@type = \"submit\"])[3]")).click();
+		driver.findElement(By.cssSelector("div[class*=\"username\"]")).click();
+		driver.findElement(By.cssSelector("a[title = \"Личный кабинет\"]")).click();
+		driver.findElement(By.cssSelector("a[title = \"О себе\"]")).click();
+		driver.findElement(By.cssSelector("button[name = \"agreement\"]")).click();
+		driver.findElement(By.id("id_fname")).clear();
+		driver.findElement(By.id("id_fname")).sendKeys("Ivan");
+		driver.findElement(By.id("id_lname")).clear();
+		driver.findElement(By.id("id_lname")).sendKeys("Ivan");
+		driver.findElement(By.cssSelector("buttton[title = \"Сохранить и продолжить\"]")).click();
+	}
+
 	@After
 	public void setDown() {
 		if (driver != null) {
-			driver.quit();
+//			driver.quit();
 			logger.info("Драйвер успешно закрыт");
 		}
 	}
