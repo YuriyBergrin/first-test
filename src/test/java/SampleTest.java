@@ -7,8 +7,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -46,7 +45,7 @@ public class SampleTest {
 		actions = new Actions(driver);
 		wait = new WebDriverWait(driver, 5);
 	}
-	
+
 	@Test
 	public void yandexMarketTest() {
 		driver.get(cfg.urlYandex());
@@ -57,19 +56,18 @@ public class SampleTest {
 		driver.findElement(xiaomi).click();
 		driver.findElement(sortByPrice).click();
 		driver.findElement(accept).click();
+//		добавляем samsung в сравнение
 		moveToElement(firstSamsung);
-//		wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(firstSamsung)));//не помогает,
-//		не знаю какое условие подобрать, чтобы не использовать sleep
-		pause(2);
+		wait.until(ExpectedConditions.stalenessOf(driver.findElement(firstSamsung)));
 		driver.findElement(firstSamsung).click();
 		Assert.assertTrue(driver.findElement(added).getText().contains("Samsung"));
-//		xiaomi
+//		добавляем xiaomi в сравнение
 		moveToElement(firstXiaomi);
-		pause(2);
 		driver.findElement(firstXiaomi).click();
 		Assert.assertTrue(driver.findElement(added).getText().contains("Xiaomi"));
-		//переход в сравнение
-		wait.until(ExpectedConditions.elementToBeClickable(compare)).click();
+//		переход в сравнение
+		wait.until(ExpectedConditions.elementToBeClickable(compare));
+		driver.findElement(compare).click();
 		Assert.assertEquals(2, driver.findElements(elementInList).size());
 	}
 
@@ -78,14 +76,6 @@ public class SampleTest {
 		if (driver != null) {
 			driver.quit();
 			logger.info("Драйвер успешно закрыт");
-		}
-	}
-
-	private void pause(int seconds) {
-		try {
-			Thread.sleep(seconds * 1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 
