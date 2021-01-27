@@ -66,8 +66,9 @@ public class SampleTest {
 		driver.findElement(firstXiaomi).click();
 		Assert.assertTrue(driver.findElement(added).getText().contains("Xiaomi"));
 //		переход в сравнение
-		wait.until(ExpectedConditions.elementToBeClickable(compare));
-		driver.findElement(compare).click();
+		WebElement el = driver.findElement(compare);
+		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		executor.executeScript("arguments[0].click();", el);
 		Assert.assertEquals(2, driver.findElements(elementInList).size());
 	}
 
