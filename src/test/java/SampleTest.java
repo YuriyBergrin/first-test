@@ -21,6 +21,7 @@ public class SampleTest {
 	private static WebDriver driver;
 	private Actions actions;
 	private WebDriverWait wait;
+	JavascriptExecutor executor;
 	//локаторы
 	private By electronics = By.xpath("//span[contains(text(),\"Электроника\")]");
 	private By smartphones = By.xpath("//a[contains(text(),\"Смартфоны\")]");
@@ -44,6 +45,7 @@ public class SampleTest {
 		driver = WebDriverFactory.create(CHROME, options);
 		actions = new Actions(driver);
 		wait = new WebDriverWait(driver, 5);
+		executor = (JavascriptExecutor)driver;
 	}
 
 	@Test
@@ -66,9 +68,7 @@ public class SampleTest {
 		driver.findElement(firstXiaomi).click();
 		Assert.assertTrue(driver.findElement(added).getText().contains("Xiaomi"));
 //		переход в сравнение
-		WebElement el = driver.findElement(compare);
-		JavascriptExecutor executor = (JavascriptExecutor)driver;
-		executor.executeScript("arguments[0].click();", el);
+		executor.executeScript("arguments[0].click();", driver.findElement(compare));
 		Assert.assertEquals(2, driver.findElements(elementInList).size());
 	}
 
