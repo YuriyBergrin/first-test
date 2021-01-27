@@ -21,7 +21,7 @@ public class SampleTest {
 	private static WebDriver driver;
 	private Actions actions;
 	private WebDriverWait wait;
-	JavascriptExecutor executor;
+	private JavascriptExecutor executor;
 	//локаторы
 	private By electronics = By.xpath("//span[contains(text(),\"Электроника\")]");
 	private By smartphones = By.xpath("//a[contains(text(),\"Смартфоны\")]");
