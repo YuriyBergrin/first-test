@@ -13,16 +13,16 @@ import java.util.concurrent.TimeUnit;
 
 public class WebDriverFactory {
 	private static WebDriver driver;
-	private static Logger logger = LogManager.getLogger(WebDriverFactory.class);
+	private static final Logger logger = LogManager.getLogger(WebDriverFactory.class);
 
 	/**
 	 * инициализация драйвера без опций
 	 * @param webDriverName - имя драйвер
-	 * @return
+	 * @return - драйвер
 	 */
 	public static WebDriver create(String webDriverName) {
 		webDriverName = webDriverName.toUpperCase().replaceAll("'", "");
-		logger.info("BROWSER IS " + webDriverName);
+		logger.info(String.format("BROWSER IS %s",webDriverName));
 
 		Browsers browser = Browsers.valueOf(webDriverName);
 
@@ -40,18 +40,18 @@ public class WebDriverFactory {
 				driver = null;
 		}
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-		logger.info("Return " + webDriverName + " driver without options");
+		logger.info(String.format("Return %s driver without options", webDriverName));
 		return driver;
 	}
 
 	/**
 	 * инициализация драйвера chrome с опциями
-	 * @param webDriverName - имя драйвер
+	 * @param webDriverName - имя драйвера
 	 * @param options - опции
-	 * @return
+	 * @return - драйвер
 	 */
 	public static WebDriver create(String webDriverName, ChromeOptions options) {
-		logger.info("Return chrome with options");
+		logger.info(String.format("Return %s with options", webDriverName));
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -60,12 +60,12 @@ public class WebDriverFactory {
 
 	/**
 	 * инициализация драйвера firefox с опциями
-	 * @param webDriverName - имя драйвер
+	 * @param webDriverName - имя драйвера
 	 * @param options - опции
-	 * @return
+	 * @return - драйвер
 	 */
 	public static WebDriver create(String webDriverName, FirefoxOptions options) {
-		logger.info("Return firefox with options");
+		logger.info(String.format("Return %s with options", webDriverName));
 		WebDriverManager.firefoxdriver().setup();
 		driver = new FirefoxDriver(options);
 		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
