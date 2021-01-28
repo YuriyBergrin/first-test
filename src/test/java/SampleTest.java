@@ -16,26 +16,26 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import static org.openqa.selenium.remote.BrowserType.CHROME;
 
 public class SampleTest {
-	private Logger logger = LogManager.getLogger(SampleTest.class);
-	private ServerConfig cfg = ConfigFactory.create(ServerConfig.class);
+	private final Logger logger = LogManager.getLogger(SampleTest.class);
+	private final ServerConfig cfg = ConfigFactory.create(ServerConfig.class);
 	private static WebDriver driver;
 	private Actions actions;
 	private WebDriverWait wait;
 	private JavascriptExecutor executor;
 	//локаторы
-	private By electronics = By.xpath("//span[contains(text(),\"Электроника\")]");
-	private By smartphones = By.xpath("//a[contains(text(),\"Смартфоны\")]");
-	private By samsung = By.xpath("//span[text() = \"Samsung\"]");
-	private By xiaomi = By.xpath("//span[text() = \"Xiaomi\"]");
-	private By sortByPrice = By.cssSelector("[data-autotest-id=\"dprice\"]");
-	private By firstSamsung = By.xpath("//span[contains(text(),\"Samsung\")]/../../../../.." +
+	private final By electronics = By.xpath("//span[contains(text(),\"Электроника\")]");
+	private final By smartphones = By.xpath("//a[contains(text(),\"Смартфоны\")]");
+	private final By samsung = By.xpath("//span[text() = \"Samsung\"]");
+	private final By xiaomi = By.xpath("//span[text() = \"Xiaomi\"]");
+	private final By sortByPrice = By.cssSelector("[data-autotest-id=\"dprice\"]");
+	private final By firstSamsung = By.xpath("//span[contains(text(),\"Samsung\")]/../../../../.." +
 			"//div[contains(@aria-label,\"сравнению\")]");
-	private By accept = By.xpath("//*[text()=\"Понятно\"]/..");
-	private By added = By.xpath("//*[contains(text(),\"добавлен к сравнению\")]");
-	private By firstXiaomi = By.xpath("//span[contains(text(),\"Xiaomi\")]/../../../../.." +
+	private final By accept = By.xpath("//*[text()=\"Понятно\"]/..");
+	private final By added = By.xpath("//*[contains(text(),\"добавлен к сравнению\")]");
+	private final By firstXiaomi = By.xpath("//span[contains(text(),\"Xiaomi\")]/../../../../.." +
 			"//div[contains(@aria-label,\"сравнению\")]");
-	private By compare = By.xpath("//span[text() = \"Сравнить\"]/..");
-	private By elementInList = By.xpath("//*[@class = \"LwwocgVx0q _2VGDFjE-Ev\"]");
+	private final By compare = By.xpath("//span[text() = \"Сравнить\"]/..");
+	private final By elementInList = By.xpath("//*[@class = \"LwwocgVx0q _2VGDFjE-Ev\"]");
 
 
 	@Before
