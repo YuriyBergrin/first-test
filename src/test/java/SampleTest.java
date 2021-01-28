@@ -69,7 +69,7 @@ public class SampleTest {
 		Assert.assertTrue(driver.findElement(added).getText().contains("Xiaomi"));
 //		переход в сравнение
 		executor.executeScript("arguments[0].click();", driver.findElement(compare));//обычный клик работает с ошибкой
-//		element click intercepted
+		//element click intercepted, нужно подобрать ожидание
 		Assert.assertEquals(2, driver.findElements(elementInList).size());
 	}
 
@@ -81,6 +81,10 @@ public class SampleTest {
 		}
 	}
 
+	/**
+	 * метод позволяет навести курсор на элемент
+	 * @param by - локатор элемента
+	 */
 	private void moveToElement(By by) {
 		actions.moveToElement(driver.findElement(by)).build().perform();
 	}
