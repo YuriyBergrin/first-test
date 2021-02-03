@@ -1,19 +1,7 @@
-import config.ServerConfig;
-import driverfactory.WebDriverFactory;
-import org.aeonbits.owner.ConfigFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import static org.openqa.selenium.remote.BrowserType.CHROME;
 
 public class SampleTest extends BaseTest{
 
@@ -47,14 +35,17 @@ public class SampleTest extends BaseTest{
 		moveToElement(firstSamsung);
 		wait.until(ExpectedConditions.stalenessOf(driver.findElement(firstSamsung)));
 		clickToElement(firstSamsung);
+		logger.info("Проверяем что samsung добавлен в сравнение");
 		Assert.assertTrue(driver.findElement(added).getText().contains("Samsung"));
 //		добавляем xiaomi в сравнение
 		moveToElement(firstXiaomi);
 		clickToElement(firstXiaomi);
+		logger.info("Проверяем что Xiaomi добавлен в сравнение");
 		Assert.assertTrue(driver.findElement(added).getText().contains("Xiaomi"));
 //		переход в сравнение
 		executor.executeScript("arguments[0].click();", driver.findElement(compare));//обычный клик работает с ошибкой
 //		element click intercepted, нужно подобрать ожидание
+		logger.info("Проверяем что в сравнение 2 товара");
 		Assert.assertEquals(2, driver.findElements(elementInList).size());
 	}
 }
