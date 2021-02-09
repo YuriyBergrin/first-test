@@ -1,6 +1,7 @@
 package custom_elements;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,7 +20,6 @@ public class DropDown {
 		WebElement dropDownHeader = driver.findElement(locator);
 		WebElement item = dropDownHeader.findElement(By.xpath("//..//button[@title=\"" + option + "\"]"));
 		dropDownHeader.click();
-		new WebDriverWait(driver,5).until(ExpectedConditions.visibilityOf(item)).click();
-		//dropDownHeader.findElement(By.xpath("//..//button[@title=\"" + option + "\"]")).click();
+		item.click();
 	}
 }
