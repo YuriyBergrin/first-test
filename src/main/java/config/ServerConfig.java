@@ -6,10 +6,12 @@ import org.aeonbits.owner.Config.Sources;
 @Sources("classpath:config.properties")
 public interface ServerConfig extends Config {
 
-	@Key("url")
-	String url();
+	@Key("url.otus")
+	String urlOtus();
 
-	@Key("url.yandex")
-	String urlYandex();
+	@Key("user.email")
+	String userEmail();
 
+	@Key("user.password")
+	String userPassword();
 }
