@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AboutMePage extends BasePage {
 	public AboutMePage(WebDriver driver) {
@@ -137,8 +136,13 @@ public class AboutMePage extends BasePage {
 	//чекбоксы
 	public AboutMePage setWorkSchedule(String value) {
 		logger.info(String.format("Выбираем график %s", value));
-		driver.findElement(
-				By.xpath("//span[contains(@class,\"work-schedule\") and contains(text(),\"" + value + "\")]")).click();
+
+		WebElement result = driver.findElement(
+				By.cssSelector(String.format("input[title=\"%s\"]", value)));
+		if (!result.isSelected()) {
+			driver.findElement(
+					By.xpath("//span[contains(@class,\"work-schedule\") and contains(text(),\"" + value + "\")]")).click();
+		}
 		return this;
 	}
 
@@ -238,5 +242,13 @@ public class AboutMePage extends BasePage {
 
 	public String getMainPhone() {
 		return mainPhoneTextInput.getAttribute("value").trim();
+	}
+
+	public boolean checkContact(int position, String type, String value) {
+		WebElement contactRow = driver.findElement(By.xpath(String.format("//input[@name=\"contact-%s-value\"]/..", (position - 1))));
+		String actualType = contactRow.getAttribute("innerText").trim();
+		WebElement contactRowValue = contactRow.findElement(By.xpath(".//input[@type=\"text\"]"));
+		String actualValue = contactRowValue.getAttribute("value").trim();
+		return actualValue.equals(value) && actualType.equals(type);
 	}
 }

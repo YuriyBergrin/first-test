@@ -48,6 +48,9 @@ public class OtusTest extends BaseTest {
 		assertEquals("Средний (Intermediate)", aboutMePage.getEnglishLevel());
 		assertTrue(aboutMePage.getReadyRelocateValue());
 		assertTrue(aboutMePage.getWorkSchedule("Гибкий график"));
-		assertEquals("123456789", aboutMePage.getMainPhone());
+		assertEquals("+1 234 567-89", aboutMePage.getMainPhone());
+		assertTrue(aboutMePage.checkContact(1,"Facebook", "123456789"));
+		assertTrue(aboutMePage.checkContact(2,"OK", "0987654321"));
+		assertTrue(aboutMePage.checkContact(3,"Viber", "@Test"));
 	}
 }
