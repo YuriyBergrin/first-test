@@ -1,6 +1,7 @@
 package custom_elements;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -27,28 +28,15 @@ public class DropDown {
 	public void chooseByOption(String option) {
 		WebElement dropDownHeader = driver.findElement(locator);//элемент из которого выпадет список
 		waitUntilElementToBeClickable(dropDownHeader);
-		dropDownHeader.click();//кликаем, должен выпасть список
-//		try {
-		waitUntilElementToBeClickable(driver.findElement(By.xpath("//button[@title=\"" + option + "\"]")));
-		driver.findElement(By.xpath("//button[@title=\"" + option + "\"]")).click();//кликаем по элементу списка
-		waitUntilElementInvisibly(driver.findElement(By.xpath("//button[@title=\"" + option + "\"]")));
-//		} catch (Exception e) {//если словили исключение, пробуем еще раз
-//			pause();//ждемс(
-//			dropDownHeader.click();
-//			waitUntilElementToBeClickable(driver.findElement(By.xpath("//button[@title=\"" + option + "\"]")));
-//			driver.findElement(By.xpath("//button[@title=\"" + option + "\"]")).click();
-//		}
-	}
-
-	/**
-	 * Пауза, не лучшее решение =)
-	 */
-	private void pause() {
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].click();", dropDownHeader);
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			executor.executeScript("arguments[0].click();", dropDownHeader);
+		} catch (Exception e) {
+
 		}
+		executor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//button[@title=\"" + option + "\"]")));
+		waitUntilElementInvisibly(driver.findElement(By.xpath("//button[@title=\"" + option + "\"]")));
 	}
 
 	private void waitUntilElementToBeClickable(WebElement element) {

@@ -66,7 +66,31 @@ public class BasePage {
 	public BasePage auth() {
 		logger.info("Кликаем вход/регистрация и переходим к модальному окну");
 		wait.until(ExpectedConditions.elementToBeClickable(logRegButton)).click();
-		new LogInModalWindow(driver).logIn();
+		try {
+			new LogInModalWindow(driver).logIn();
+		} catch (Exception e) {
+			wait.until(ExpectedConditions.elementToBeClickable(logRegButton)).click();
+			new LogInModalWindow(driver).logIn();//todo стал тупить сайт
+		}
 		return this;
+	}
+
+	/**
+	 * почистить cookies
+	 */
+	public void clearCookies() {
+		logger.info("Чистим куки");
+		driver.manage().deleteAllCookies();
+	}
+
+	/**
+	 * пауза
+	 */
+	protected void pause(int mls) {
+		try {
+			Thread.sleep(mls);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

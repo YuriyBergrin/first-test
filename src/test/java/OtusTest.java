@@ -1,4 +1,8 @@
+import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class OtusTest extends BaseTest {
 	@Test
@@ -9,6 +13,7 @@ public class OtusTest extends BaseTest {
 				.gotoPersonalAccount();
 		personalAccountPage.gotoAboutMe();
 		aboutMePage
+				.deleteContact()
 				.setFirstName("Иван")
 				.setLastName("Иванов")
 				.setLatinFirstName("Ivan")
@@ -16,13 +21,33 @@ public class OtusTest extends BaseTest {
 				.setBlogName("Ванька")
 				.setDateOfBirth("01.02.1991")
 				.setCountry("Россия")
-				.setCity("Азов")
+				.setCity("Москва")
 				.setEnglishLevel("Средний (Intermediate)")
 				.setRelocateRadioButton(true)
 				.setWorkSchedule("Гибкий график")
 				.setPhone("123456789")
-				.setNewContact(1,"Facebook", "123456789");
-//				.setNewContact(1,"Viber", "@Test");
-//				.setNewContact(2,"Viber", "0987654321");
+				.setNewContact(1,"Facebook", "123456789")
+				.setNewContact(2,"Viber", "@Test")
+				.setNewContact(3,"OK", "0987654321")
+				.saveChanges()
+				.clearCookies();
+		//почистили куки - вышли, идем проверять поля
+		otusMainPage
+				.open()
+				.auth()
+				.gotoPersonalAccount();
+		personalAccountPage.gotoAboutMe();
+		assertEquals("Иван", aboutMePage.getFirstName());
+		assertEquals("Иванов", aboutMePage.getLastName());
+		assertEquals("Ivan", aboutMePage.getLatinFirstName());
+		assertEquals("Ivanov", aboutMePage.getLatinLastName());
+		assertEquals("Ванька", aboutMePage.getBlogName());
+		assertEquals("01.02.1991", aboutMePage.getDateOfBirth());
+		assertEquals("Россия", aboutMePage.getCountry());
+		assertEquals("Москва", aboutMePage.getCity());
+		assertEquals("Средний (Intermediate)", aboutMePage.getEnglishLevel());
+		assertTrue(aboutMePage.getReadyRelocateValue());
+		assertTrue(aboutMePage.getWorkSchedule("Гибкий график"));
+		assertEquals("123456789", aboutMePage.getMainPhone());
 	}
 }

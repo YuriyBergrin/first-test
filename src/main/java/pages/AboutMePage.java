@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AboutMePage extends BasePage {
 	public AboutMePage(WebDriver driver) {
@@ -40,6 +41,18 @@ public class AboutMePage extends BasePage {
 	private WebElement closeModalWindowButton;
 	@FindBy(xpath = "//button[text()=\"Добавить\"]")
 	private WebElement addContactButton;
+	@FindBy(xpath = "//*[@title=\"Сохранить и заполнить позже\"]")
+	private WebElement saveButton;
+	@FindBy(xpath = "//input[@name=\"country\"]/../div")
+	private WebElement countryTextInput;
+	@FindBy(xpath = "//input[@name=\"city\"]/../div")
+	private WebElement cityTextInput;
+	@FindBy(xpath = "//input[@name=\"english_level\"]/../div")
+	private WebElement englishLevel;
+	@FindBy(css = "[id=\"id_ready_to_relocate_1\"]")
+	private WebElement readyRelocateValue;
+	@FindBy(id = "id_phone")
+	private WebElement mainPhoneTextInput;
 
 	/**
 	 * Методы
@@ -84,6 +97,7 @@ public class AboutMePage extends BasePage {
 		logger.info(String.format("Добавляем дату рождения %s", text));
 		dateOfBirthTextInput.clear();
 		dateOfBirthTextInput.sendKeys(text);
+		blogNameTextInput.click();
 		return this;
 	}
 
@@ -133,32 +147,96 @@ public class AboutMePage extends BasePage {
 		logger.info(String.format("Заполняем телефон %s", phone));
 		changePhoneButton.click();
 		phoneTextInput.clear();
-		phoneTextInput.sendKeys(phone);
+		char[] phoneNumbers = phone.toCharArray();
+		for (char number : phoneNumbers) {
+			phoneTextInput.sendKeys(String.valueOf(number));
+			pause(300);
+		}
 		submitPhoneButton.click();
 		closeModalWindowButton.click();
 		return this;
 	}
 
 	/**
-	 *
 	 * @param position - какой по счету контакт заполнить
-	 * @param type - тип из выпадающего списка
-	 * @param value - текст которым заполняется поле контакт
+	 * @param type     - тип из выпадающего списка
+	 * @param value    - текст которым заполняется поле контакт
 	 * @return - экземпляр текущей страницы
 	 */
 	public AboutMePage setNewContact(int position, String type, String value) {
 		logger.info(String.format("Добавляем новый контакт %s -  %s -  %s", position, type, value));
-		//по умолчанию уже есть пустое поле для контакта, поэтому для первого не надо нажимать "Добавить"
-		if (position != 0) {
-			addContactButton.click();
-		}
-		//выбираем тип контакта
-		logger.info(String.format("Выбираем тип %s", type));
-		DropDown countryDropDown = new DropDown(driver, By.xpath("//*[@name=\"contact-" + position + "-service\"]/.."));
-		countryDropDown.chooseByOption(type);
-		//заполняем поле контакта
-		logger.info(String.format("Заполняем поле контакта %s", value));
-		driver.findElement(By.name("contact-" + position + "-value")).sendKeys(value);
+		addContactButton.click();
+		driver.findElement(By.xpath("//*[text()=\"Способ связи\"]")).click();
+		driver.findElement(By.xpath(String.format("//div[@class=\"lk-cv-block__select-options lk-cv-block__select-options_left js-custom-select-options-container\"]//button[@title=\"%s\"]", type))).click();
+		driver.findElement(By.name("contact-" + (position + 2) + "-value")).sendKeys(value);
+
 		return this;
+	}
+
+	//удалить старые контакты, чтобы можно было добавить новые
+	public AboutMePage deleteContact() {
+		logger.info("Удаляем все контакты");
+		driver.findElement(By.xpath("(//button[text()=\"Удалить\"])[2]")).click();
+		driver.findElement(By.xpath("(//button[text()=\"Удалить\"])[4]")).click();
+		driver.findElement(By.xpath("(//button[text()=\"Удалить\"])[6]")).click();
+		return this;
+	}
+
+	public AboutMePage saveChanges() {
+		logger.info("Нажимаем сохранить");
+		saveButton.click();
+		return this;
+	}
+
+	//получение данных из полей
+	public String getFirstName() {
+		return firstNameTextInput.getAttribute("value").trim();
+	}
+
+	public String getLastName() {
+		return lastNameTextInput.getAttribute("value").trim();
+	}
+
+	public String getLatinFirstName() {
+		return latinFirstNameTextInput.getAttribute("value").trim();
+	}
+
+	public String getLatinLastName() {
+		return latinLastNameTextInput.getAttribute("value").trim();
+	}
+
+	public String getBlogName() {
+		return blogNameTextInput.getAttribute("value").trim();
+	}
+
+	public String getDateOfBirth() {
+		return dateOfBirthTextInput.getAttribute("value").trim();
+	}
+
+	public String getCountry() {
+		return countryTextInput.getText().trim();
+	}
+
+	public String getCity() {
+		return cityTextInput.getText().trim();
+	}
+
+	public String getEnglishLevel() {
+		return englishLevel.getText().trim();
+	}
+
+	public boolean getReadyRelocateValue() {
+		return readyRelocateValue.isSelected();
+	}
+
+	public boolean getWorkSchedule(String value) {
+		logger.info(String.format("Выбираем график %s", value));
+		WebElement result = driver.findElement(
+				By.cssSelector(String.format("input[title=\"%s\"]", value)));
+		return result.isSelected();
+	}
+
+	public String getMainPhone() {
+		return mainPhoneTextInput.getAttribute("value").trim();
 	}
 }
