@@ -52,6 +52,8 @@ public class AboutMePage extends BasePage {
 	private WebElement readyRelocateValue;
 	@FindBy(id = "id_phone")
 	private WebElement mainPhoneTextInput;
+	@FindBy(xpath = "//*[text()=\"Способ связи\"]")
+	private WebElement typeCommunication;
 
 	/**
 	 * Методы
@@ -170,8 +172,10 @@ public class AboutMePage extends BasePage {
 	public AboutMePage setNewContact(int position, String type, String value) {
 		logger.info(String.format("Добавляем новый контакт %s -  %s -  %s", position, type, value));
 		addContactButton.click();
-		driver.findElement(By.xpath("//*[text()=\"Способ связи\"]")).click();
-		driver.findElement(By.xpath(String.format("//div[@class=\"lk-cv-block__select-options lk-cv-block__select-options_left js-custom-select-options-container\"]//button[@title=\"%s\"]", type))).click();
+		typeCommunication.click();
+		driver.findElement(By.xpath(
+				String.format("//div[@class=\"lk-cv-block__select-options lk-cv-block__select-options_left js-custom-select-options-container\"]" +
+						"//button[@title=\"%s\"]", type))).click();
 		driver.findElement(By.name("contact-" + (position + 2) + "-value")).sendKeys(value);
 
 		return this;
@@ -180,9 +184,9 @@ public class AboutMePage extends BasePage {
 	//удалить старые контакты, чтобы можно было добавить новые
 	public AboutMePage deleteContact() {
 		logger.info("Удаляем все контакты");
-		driver.findElement(By.xpath("(//button[text()=\"Удалить\"])[2]")).click();
-		driver.findElement(By.xpath("(//button[text()=\"Удалить\"])[4]")).click();
-		driver.findElement(By.xpath("(//button[text()=\"Удалить\"])[6]")).click();
+		for (int i = 2; i < 7; i += 2) {
+			driver.findElement(By.xpath(String.format("(//button[text()=\"Удалить\"])[%s]", i))).click();
+		}
 		return this;
 	}
 
