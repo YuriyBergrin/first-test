@@ -35,7 +35,7 @@ public class BaseTest {
 	public void setDown() {
 		logger.info("Finish test");
 		if (driver != null) {
-//			driver.quit();
+			driver.quit();
 			logger.info("Драйвер успешно закрыт");
 		}
 	}
