@@ -1,4 +1,3 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -26,9 +25,9 @@ public class OtusTest extends BaseTest {
 				.setRelocateRadioButton(true)
 				.setWorkSchedule("Гибкий график")
 				.setPhone("123456789")
-				.setNewContact(1,"Facebook", "123456789")
-				.setNewContact(2,"Viber", "@Test")
-				.setNewContact(3,"OK", "0987654321")
+				.setNewContact(1, "Facebook", "123456789")
+				.setNewContact(2, "Viber", "@Test")
+				.setNewContact(3, "OK", "0987654321")
 				.saveChanges()
 				.clearCookies();
 		//почистили куки - вышли, идем проверять поля
@@ -37,7 +36,7 @@ public class OtusTest extends BaseTest {
 				.auth()
 				.gotoPersonalAccount();
 		personalAccountPage.gotoAboutMe();
-		assertEquals("Иван", aboutMePage.getFirstName());
+		assertEquals("Имя не соотвествует", "Иван", aboutMePage.getFirstName());
 		assertEquals("Иванов", aboutMePage.getLastName());
 		assertEquals("Ivan", aboutMePage.getLatinFirstName());
 		assertEquals("Ivanov", aboutMePage.getLatinLastName());
@@ -49,8 +48,8 @@ public class OtusTest extends BaseTest {
 		assertTrue(aboutMePage.getReadyRelocateValue());
 		assertTrue(aboutMePage.getWorkSchedule("Гибкий график"));
 		assertEquals("+1 234 567-89", aboutMePage.getMainPhone());
-		assertTrue(aboutMePage.checkContact(1,"Facebook", "123456789"));
-		assertTrue(aboutMePage.checkContact(2,"OK", "0987654321"));
-		assertTrue(aboutMePage.checkContact(3,"Viber", "@Test"));
+		assertTrue(aboutMePage.checkContact(1, "Facebook", "123456789"));
+		assertTrue(aboutMePage.checkContact(2, "OK", "0987654321"));
+		assertTrue(aboutMePage.checkContact(3, "Viber", "@Test"));
 	}
 }
